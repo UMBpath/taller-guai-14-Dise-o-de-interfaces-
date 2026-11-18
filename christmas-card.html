@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta de Navidad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 50%, #1a472a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(180deg, #8B0000 0%, #C41E3A 50%, #8B0000 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #FFD700;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(610px) rotate(360deg);
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .christmas-tree {
+            font-size: 120px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .title {
+            font-size: 48px;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #FFF8DC;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .decorations {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .decoration {
+            font-size: 40px;
+            animation: twinkle 1.5s ease-in-out infinite;
+        }
+
+        .decoration:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .decoration:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        .border-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .corner {
+            position: absolute;
+            font-size: 60px;
+            color: #FFD700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .corner-tl {
+            top: 15px;
+            left: 15px;
+        }
+
+        .corner-tr {
+            top: 15px;
+            right: 15px;
+            transform: scaleX(-1);
+        }
+
+        .corner-bl {
+            bottom: 15px;
+            left: 15px;
+            transform: scaleY(-1);
+        }
+
+        .corner-br {
+            bottom: 15px;
+            right: 15px;
+            transform: scale(-1, -1);
+        }
+
+        .footer {
+            font-size: 18px;
+            color: #FFF8DC;
+            margin-top: 30px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="border-decoration">
+            <div class="corner corner-tl">❄</div>
+            <div class="corner corner-tr">❄</div>
+            <div class="corner corner-bl">❄</div>
+            <div class="corner corner-br">❄</div>
+        </div>
+
+        <div class="snowflakes">
+            <div class="snowflake" style="left: 10%; animation-duration: 8s; animation-delay: 0s;">❄</div>
+            <div class="snowflake" style="left: 20%; animation-duration: 12s; animation-delay: 2s;">❄</div>
+            <div class="snowflake" style="left: 30%; animation-duration: 10s; animation-delay: 4s;">❄</div>
+            <div class="snowflake" style="left: 40%; animation-duration: 14s; animation-delay: 1s;">❄</div>
+            <div class="snowflake" style="left: 50%; animation-duration: 9s; animation-delay: 3s;">❄</div>
+            <div class="snowflake" style="left: 60%; animation-duration: 11s; animation-delay: 5s;">❄</div>
+            <div class="snowflake" style="left: 70%; animation-duration: 13s; animation-delay: 2s;">❄</div>
+            <div class="snowflake" style="left: 80%; animation-duration: 10s; animation-delay: 4s;">❄</div>
+            <div class="snowflake" style="left: 90%; animation-duration: 8s; animation-delay: 6s;">❄</div>
+        </div>
+
+        <div class="content">
+            <div class="christmas-tree">🎄</div>
+            <h1 class="title">¡Feliz Navidad!</h1>
+            <p class="message">
+                Te envío esta tarjeta con todo mi cariño. Espero que tengas unas fiestas maravillosas
+                llenas de alegría, paz y momentos especiales con tus seres queridos.
+            </p>
+            <div class="decorations">
+                <span class="decoration">🎁</span>
+                <span class="decoration">⭐</span>
+                <span class="decoration">🎁</span>
+            </div>
+            <p class="footer">Con amor y mejores deseos</p>
+        </div>
+    </div>
+</body>
+</html>

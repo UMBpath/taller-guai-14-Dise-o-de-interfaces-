@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Tarjeta de Navidad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B0000 0%, #C41E3A 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .card-preview {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card-preview img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #C41E3A;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8B0000 0%, #C41E3A 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        .spinner {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner::after {
+            content: "";
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #C41E3A;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .config-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .config-section h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .config-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .config-section p {
+            color: #856404;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .config-section a {
+            color: #856404;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 Enviar Tarjeta</h1>
+            <p>Solo escribe el email y listo</p>
+        </div>
+
+        <div class="content">
+            <div class="card-preview">
+                <img src="christmas-card.png" alt="Tarjeta de Navidad">
+            </div>
+
+            <div class="config-section">
+                <h3>⚙️ Configuración (Solo una vez)</h3>
+                <input type="password" id="resendApiKey" placeholder="API Key de Resend">
+                <p>Obtén tu API key gratis en <a href="https://resend.com/api-keys" target="_blank">resend.com/api-keys</a></p>
+            </div>
+
+            <div class="form-group">
+                <label for="recipientEmail">Email del destinatario</label>
+                <input type="email" id="recipientEmail" placeholder="ejemplo@gmail.com" required>
+            </div>
+
+            <button type="button" class="btn" onclick="sendCard()">📧 Enviar Tarjeta</button>
+
+            <div class="spinner" id="spinner"></div>
+            <div class="success-message" id="successMessage">
+                <strong>✅ ¡Tarjeta enviada!</strong>
+                <p>La tarjeta de Navidad ha sido enviada a <span id="sentTo"></span></p>
+            </div>
+            <div class="error-message" id="errorMessage">
+                <strong>❌ Error</strong>
+                <p id="errorText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendCard() {
+            const resendApiKey = document.getElementById('resendApiKey').value;
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            const spinner = document.getElementById('spinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const sentTo = document.getElementById('sentTo');
+
+            if (!resendApiKey) {
+                errorMessage.style.display = 'block';
+                errorText.textContent = 'Por favor configura tu API Key de Resend';
+                return;
+            }
+
+            if (!recipientEmail) {
+                errorMessage.style.display = 'block';
+                errorText.textContent = 'Por favor ingresa el email del destinatario';
+                return;
+            }
+
+            spinner.style.display = 'block';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // HTML del email
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Tarjeta de Navidad</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
+                        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+                        .header { background: linear-gradient(135deg, #8B0000 0%, #C41E3A 100%); padding: 30px; text-align: center; }
+                        .header h1 { color: #FFD700; margin: 0; font-size: 32px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); }
+                        .card-section { text-align: center; padding: 20px; background: linear-gradient(180deg, #8B0000 0%, #C41E3A 50%, #8B0000 100%); }
+                        .card-image { max-width: 100%; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+                        .message { padding: 30px; text-align: center; }
+                        .message p { color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0; }
+                        .footer { background-color: #2d5a3f; color: #ffffff; padding: 20px; text-align: center; font-size: 14px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="header">
+                            <h1>🎄 ¡Feliz Navidad! 🎄</h1>
+                        </div>
+                        <div class="card-section">
+                            <img src="https://i.imgur.com/CHRISTMAS_CARD_IMAGE_PLACEHOLDER.png" alt="Tarjeta de Navidad" class="card-image">
+                        </div>
+                        <div class="message">
+                            <p>¡Hola!</p>
+                            <p>Te envío esta tarjeta de Navidad con todo mi cariño. Espero que tengas unas fiestas maravillosas llenas de alegría, paz y momentos especiales con tus seres queridos.</p>
+                            <p>Que el próximo año te traiga muchas bendiciones y felicidad.</p>
+                            <p>¡Feliz Navidad y próspero Año Nuevo! 🎅🎁</p>
+                        </div>
+                        <div class="footer">
+                            <p>© 2024 | Enviado con ❤️</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${resendApiKey}`
+                },
+                body: JSON.stringify({
+                    from: 'Navidad <onboarding@resend.dev>',
+                    to: [recipientEmail],
+                    subject: '🎄 ¡Feliz Navidad! 🎄',
+                    html: htmlContent
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                spinner.style.display = 'none';
+
+                if (data.id) {
+                    successMessage.style.display = 'block';
+                    sentTo.textContent = recipientEmail;
+                    document.getElementById('recipientEmail').value = '';
+                } else {
+                    errorMessage.style.display = 'block';
+                    errorText.textContent = data.message || 'Error al enviar la tarjeta';
+                }
+            })
+            .catch(error => {
+                spinner.style.display = 'none';
+                errorMessage.style.display = 'block';
+                errorText.textContent = 'Error de conexión: ' + error.message;
+            });
+        }
+
+        // Guardar la API key en localStorage
+        document.getElementById('resendApiKey').addEventListener('change', function() {
+            localStorage.setItem('resendApiKey', this.value);
+        });
+
+        // Cargar la API key guardada
+        window.onload = function() {
+            const savedKey = localStorage.getItem('resendApiKey');
+            if (savedKey) {
+                document.getElementById('resendApiKey').value = savedKey;
+            }
+        };
+    </script>
+</body>
+</html>
