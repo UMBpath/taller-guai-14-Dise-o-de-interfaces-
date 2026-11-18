@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller 14 — Diseño Interactivo | Juan Camilo Patiño</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #0c1017;
+            --bg-surface: #141a24;
+            --bg-card: #18202d;
+            --bg-card-hover: #1e2838;
+            --border: #232d3d;
+            --border-focus: #3b495f;
+            --accent: #f59e0b;
+            --accent-soft: rgba(245, 158, 11, 0.12);
+            --accent-blue: #38bdf8;
+            --text-heading: #f1f5f9;
+            --text-body: #94a3b8;
+            --text-dim: #64748b;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-heading);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(12, 16, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-badge {
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-body);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-heading);
+        }
+
+        .nav-links a.active-link {
+            color: var(--accent);
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero / Introduction */
+        .hero {
+            padding: 70px 0 50px;
+        }
+
+        .hero-meta {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: var(--text-body);
+            max-width: 720px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #0c1017;
+        }
+
+        .btn-primary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-heading);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-focus);
+            background: var(--bg-card);
+        }
+
+        /* Sections Common */
+        section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            margin-bottom: 36px;
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-body);
+            max-width: 640px;
+        }
+
+        /* Tarjeta Navideña Section */
+        .card-showcase {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 40px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 36px;
+            align-items: center;
+        }
+
+        .card-preview {
+            position: relative;
+            background: #080d17;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card-preview:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .card-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .preview-hint {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+
+        .card-details h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #ffffff;
+        }
+
+        .card-details p {
+            font-size: 15px;
+            color: var(--text-body);
+            margin-bottom: 20px;
+            line-height: 1.65;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .spec-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+        }
+
+        .spec-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .spec-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        /* Video Section */
+        .video-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            max-height: 540px;
+            display: block;
+            outline: none;
+            background: #000000;
+        }
+
+        .video-info h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .video-info p {
+            font-size: 15px;
+            color: var(--text-body);
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        /* Infografías Section */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .filter-pill {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-body);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-pill:hover {
+            color: var(--text-heading);
+            border-color: var(--border-focus);
+        }
+
+        .filter-pill.active {
+            background: var(--accent);
+            color: #0c1017;
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .infografias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .info-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-focus);
+        }
+
+        .info-card-media {
+            position: relative;
+            height: 280px;
+            background: #090e18;
+            overflow: hidden;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: opacity 0.2s;
+        }
+
+        .info-card-media:hover img {
+            opacity: 0.9;
+        }
+
+        .info-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .info-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .tool-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .tool-type {
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tool-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .tool-description {
+            font-size: 13.5px;
+            color: var(--text-body);
+            line-height: 1.55;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .tool-footer {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn-view-card {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-heading);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .btn-view-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-focus);
+        }
+
+        .btn-icon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-body);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .btn-icon-card:hover {
+            color: #ffffff;
+            border-color: var(--border-focus);
+        }
+
+        /* Lightbox Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(8, 11, 16, 0.92);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            position: relative;
+            max-width: 850px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-box img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-bar {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 14px;
+            color: var(--text-body);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: var(--text-body);
+            background: none;
+            border: none;
+            font-size: 26px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            font-size: 13px;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 860px) {
+            .card-showcase {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero {
+                padding: 40px 0 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación limpia -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#inicio" class="nav-brand">
+                Juan Camilo Patiño <span class="nav-badge">Taller 14</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#tarjeta">Tarjeta Navideña</a></li>
+                <li><a href="#squarespace">Video Squarespace</a></li>
+                <li><a href="#infografias">Infografías de Hosting</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Portada / Introducción -->
+        <header class="hero" id="inicio">
+            <div class="hero-meta">Diseño Interactivo — Entrega de Clase</div>
+            <h1>Tarjeta de Navidad, Squarespace & Hosting</h1>
+            <p>
+                Hola, este es el proyecto para el Taller 14. Desarrollé una tarjeta navideña en alta densidad para correo, el video explicando la construcción del sitio en Squarespace y 10 infografías individuales sobre opciones de hosting gratuito.
+            </p>
+            <div class="hero-actions">
+                <a href="#tarjeta" class="btn btn-primary">Tarjeta de Navidad</a>
+                <a href="#squarespace" class="btn btn-secondary">Video Squarespace</a>
+                <a href="#infografias" class="btn btn-secondary">10 Infografías</a>
+            </div>
+        </header>
+
+        <!-- Sección 1: Tarjeta Navideña -->
+        <section id="tarjeta">
+            <div class="section-header">
+                <h2 class="section-title">Tarjeta Navideña para Correo</h2>
+                <p class="section-subtitle">
+                    Diseñada en alta densidad (300 DPI) para que al incrustarla en el cuerpo de un correo o en pantallas Retina de celulares no pierda nitidez.
+                </p>
+            </div>
+
+            <div class="card-showcase">
+                <div class="card-preview" onclick="openModal('tarjeta_navidad.png', 'Tarjeta de Navidad — Alta resolución (1600 × 2400 px, 300 DPI)')">
+                    <img src="tarjeta_navidad.png" alt="Vista previa de la Tarjeta de Navidad">
+                    <span class="preview-hint">Clic para ver completa</span>
+                </div>
+
+                <div class="card-details">
+                    <h3>Merry Christmas & Happy New Year</h3>
+                    <p>
+                        Para el diseño utilicé una base azul noche profundo combinada con acentos dorados y estrellas geométricas. El árbol central y la tipografía serif están pensados para comunicar elegancia sin sobrecargar el peso del archivo.
+                    </p>
+
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-label">Dimensiones</div>
+                            <div class="spec-value">1600 × 2400 px</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Resolución</div>
+                            <div class="spec-value">300 DPI (Retina)</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Formato</div>
+                            <div class="spec-value">PNG Optimizado</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Destino</div>
+                            <div class="spec-value">Cuerpo de Email HTML</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="tarjeta_navidad.png" download="Tarjeta_Navidad_JuanCamilo.png" class="btn btn-primary">
+                            Descargar PNG
+                        </a>
+                        <button onclick="openModal('tarjeta_navidad.png', 'Tarjeta de Navidad — 1600 × 2400 px')" class="btn btn-secondary">
+                            Pantalla completa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Sitio Web en Squarespace (Video) -->
+        <section id="squarespace">
+            <div class="section-header">
+                <h2 class="section-title">Sitio Web en Squarespace</h2>
+                <p class="section-subtitle">
+                    Video explicativo en inglés sobre la construcción del sitio, el sistema de diseño, la cuadrícula Fluid Engine y la adaptación para dispositivos móviles.
+                </p>
+            </div>
+
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video controls playsinline preload="metadata">
+                        <source src="2026-11-17 20-00-58.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video HTML5. Puedes descargarlo directamente abajo.
+                    </video>
+                </div>
+                <div class="video-info">
+                    <h3>Recorrido y Explicación en Video</h3>
+                    <p>
+                        En esta presentación detallo cómo se configuraron los bloques y secciones en Squarespace 7.1, la paleta de colores, la jerarquía de fuentes y la revisión de la versión móvil para que la página se adapte fluidamente a cualquier pantalla.
+                    </p>
+
+                    <div class="specs-grid" style="margin-bottom: 22px;">
+                        <div class="spec-item">
+                            <div class="spec-label">Sitio Web Oficial</div>
+                            <div class="spec-value"><a href="https://raccoon-coral-jkes.squarespace.com/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: underline;">raccoon-coral-jkes.squarespace.com ↗</a></div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Plataforma</div>
+                            <div class="spec-value">Squarespace 7.1</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Sistema de Maquetación</div>
+                            <div class="spec-value">Fluid Engine Grid</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">Idioma del Video</div>
+                            <div class="spec-value">Inglés (Walkthrough)</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://raccoon-coral-jkes.squarespace.com/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            Visitar Sitio en Squarespace ↗
+                        </a>
+                        <a href="2026-11-17 20-00-58.mp4" download="Explicacion_Squarespace_JuanCamilo.mp4" class="btn btn-secondary">
+                            Descargar Video (.MP4)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: 10 Infografías -->
+        <section id="infografias">
+            <div class="section-header">
+                <h2 class="section-title">10 Opciones con Hosting Gratuito</h2>
+                <p class="section-subtitle">
+                    Una infografía individual para cada herramienta, explicando qué permite hacer en su plan gratuito, sus límites y para qué tipo de proyecto conviene.
+                </p>
+            </div>
+
+            <!-- Filtros simples -->
+            <div class="filter-bar">
+                <button class="filter-pill active" onclick="filterCards('all', this)">Todas (10)</button>
+                <button class="filter-pill" onclick="filterCards('frontend', this)">Frontend / Estático</button>
+                <button class="filter-pill" onclick="filterCards('fullstack', this)">Backend / Fullstack</button>
+                <button class="filter-pill" onclick="filterCards('database', this)">Bases de Datos & Edge</button>
+            </div>
+
+            <div class="infografias-grid" id="cardsGrid">
+
+                <!-- 01. Vercel -->
+                <div class="info-card" data-category="frontend">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_01_vercel.png', '01. Vercel — Hosting para Next.js y React')">
+                        <img src="infografias/infografia_01_vercel.png" alt="Infografía Vercel" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#01</span>
+                            <span class="tool-type">Frontend</span>
+                        </div>
+                        <h4 class="tool-name">Vercel</h4>
+                        <p class="tool-description">
+                            La mejor opción si trabajas con Next.js o React. Te da 100 GB al mes de transferencia y despliega automáticamente cada vez que haces push a GitHub.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_01_vercel.png', '01. Vercel')">Ver Infografía</button>
+                            <a href="infografias/infografia_01_vercel.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 02. Netlify -->
+                <div class="info-card" data-category="frontend">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_02_netlify.png', '02. Netlify — JAMstack y Formularios')">
+                        <img src="infografias/infografia_02_netlify.png" alt="Infografía Netlify" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#02</span>
+                            <span class="tool-type">JAMstack</span>
+                        </div>
+                        <h4 class="tool-name">Netlify</h4>
+                        <p class="tool-description">
+                            Muy práctica para sitios que tienen formularios de contacto porque los captura sin tener que programar un backend. Incluye 100 GB/mes.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_02_netlify.png', '02. Netlify')">Ver Infografía</button>
+                            <a href="infografias/infografia_02_netlify.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 03. GitHub Pages -->
+                <div class="info-card" data-category="frontend">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_03_github_pages.png', '03. GitHub Pages — Sitios Estáticos')">
+                        <img src="infografias/infografia_03_github_pages.png" alt="Infografía GitHub Pages" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#03</span>
+                            <span class="tool-type">Estático</span>
+                        </div>
+                        <h4 class="tool-name">GitHub Pages</h4>
+                        <p class="tool-description">
+                            El clásico para proyectos escolares y portafolios. Se activa con un clic en tu repositorio público de GitHub y es 100% gratuito sin caducidad.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_03_github_pages.png', '03. GitHub Pages')">Ver Infografía</button>
+                            <a href="infografias/infografia_03_github_pages.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 04. Render -->
+                <div class="info-card" data-category="fullstack">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_04_render.png', '04. Render — Web Services y Backend')">
+                        <img src="infografias/infografia_04_render.png" alt="Infografía Render" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#04</span>
+                            <span class="tool-type">Fullstack</span>
+                        </div>
+                        <h4 class="tool-name">Render</h4>
+                        <p class="tool-description">
+                            Ideal cuando necesitas correr un backend en Node.js, Python o un contenedor Docker. También aloja páginas estáticas gratis de forma ilimitada.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_04_render.png', '04. Render')">Ver Infografía</button>
+                            <a href="infografias/infografia_04_render.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 05. Cloudflare Pages -->
+                <div class="info-card" data-category="frontend">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_05_cloudflare_pages.png', '05. Cloudflare Pages — Tráfico Ilimitado')">
+                        <img src="infografias/infografia_05_cloudflare_pages.png" alt="Infografía Cloudflare Pages" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#05</span>
+                            <span class="tool-type">Edge CDN</span>
+                        </div>
+                        <h4 class="tool-name">Cloudflare Pages</h4>
+                        <p class="tool-description">
+                            De las pocas plataformas que no te cobran por ancho de banda en su plan sin costo. Los servidores responden rápido en cualquier parte del mundo.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_05_cloudflare_pages.png', '05. Cloudflare Pages')">Ver Infografía</button>
+                            <a href="infografias/infografia_05_cloudflare_pages.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 06. Firebase Hosting -->
+                <div class="info-card" data-category="fullstack">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_06_firebase_hosting.png', '06. Firebase Hosting — Ecosistema Google')">
+                        <img src="infografias/infografia_06_firebase_hosting.png" alt="Infografía Firebase Hosting" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#06</span>
+                            <span class="tool-type">Google Cloud</span>
+                        </div>
+                        <h4 class="tool-name">Firebase Hosting</h4>
+                        <p class="tool-description">
+                            La plataforma de Google. Da 10 GB de almacenamiento y se conecta directo con autenticación de usuarios (login) y bases de datos en tiempo real.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_06_firebase_hosting.png', '06. Firebase Hosting')">Ver Infografía</button>
+                            <a href="infografias/infografia_06_firebase_hosting.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 07. Supabase -->
+                <div class="info-card" data-category="database">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_07_supabase.png', '07. Supabase — PostgreSQL y Storage')">
+                        <img src="infografias/infografia_07_supabase.png" alt="Infografía Supabase" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#07</span>
+                            <span class="tool-type">Base de Datos</span>
+                        </div>
+                        <h4 class="tool-name">Supabase</h4>
+                        <p class="tool-description">
+                            Alternativa de código abierto a Firebase. Te da una base de datos PostgreSQL de 500 MB y baldes de 1 GB para almacenar fotos o documentos.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_07_supabase.png', '07. Supabase')">Ver Infografía</button>
+                            <a href="infografias/infografia_07_supabase.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 08. Railway -->
+                <div class="info-card" data-category="fullstack">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_08_railway.png', '08. Railway — Despliegue de Contenedores')">
+                        <img src="infografias/infografia_08_railway.png" alt="Infografía Railway" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#08</span>
+                            <span class="tool-type">Contenedores</span>
+                        </div>
+                        <h4 class="tool-name">Railway</h4>
+                        <p class="tool-description">
+                            Detecta automáticamente el lenguaje de tu código sin configurar servidores. Soporta Docker y levanta bases de datos MySQL, Mongo o Redis en segundos.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_08_railway.png', '08. Railway')">Ver Infografía</button>
+                            <a href="infografias/infografia_08_railway.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 09. Fly.io -->
+                <div class="info-card" data-category="database">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_09_fly_io.png', '09. Fly.io — Servidores Distribuidos')">
+                        <img src="infografias/infografia_09_fly_io.png" alt="Infografía Fly.io" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#09</span>
+                            <span class="tool-type">MicroVMs</span>
+                        </div>
+                        <h4 class="tool-name">Fly.io</h4>
+                        <p class="tool-description">
+                            Ejecuta microservidores físicos cerca de los usuarios. Permite hasta 3 máquinas virtuales pequeñas y 3 GB de disco persistente sin pagar.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_09_fly_io.png', '09. Fly.io')">Ver Infografía</button>
+                            <a href="infografias/infografia_09_fly_io.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. Surge.sh -->
+                <div class="info-card" data-category="frontend">
+                    <div class="info-card-media" onclick="openModal('infografias/infografia_10_surge_sh.png', '10. Surge.sh — Publicación por Terminal')">
+                        <img src="infografias/infografia_10_surge_sh.png" alt="Infografía Surge.sh" loading="lazy">
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-card-header">
+                            <span class="tool-number">#10</span>
+                            <span class="tool-type">CLI Express</span>
+                        </div>
+                        <h4 class="tool-name">Surge.sh</h4>
+                        <p class="tool-description">
+                            La herramienta más rápida para entregar tareas: abres la terminal, escribes un comando y en 3 segundos la página web ya está disponible en internet.
+                        </p>
+                        <div class="tool-footer">
+                            <button class="btn-view-card" onclick="openModal('infografias/infografia_10_surge_sh.png', '10. Surge.sh')">Ver Infografía</button>
+                            <a href="infografias/infografia_10_surge_sh.png" download class="btn-icon-card" title="Descargar">⬇</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Visor de imagen (Modal) -->
+    <div id="imageModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-box">
+            <button class="modal-close-btn" onclick="forceCloseModal()" title="Cerrar">&times;</button>
+            <img id="modalImg" src="" alt="Infografía">
+            <div class="modal-bar">
+                <span id="modalCaption"></span>
+                <a id="modalDownload" href="" download class="btn btn-primary" style="padding: 6px 14px; font-size: 13px;">Descargar imagen</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Taller 14 — Diseño Interactivo • Juan Camilo Patiño</p>
+            <p>Archivos listos para entrega de clase.</p>
+        </div>
+    </footer>
+
+    <!-- Script de interactividad sencillo -->
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCaption = document.getElementById('modalCaption');
+        const modalDownload = document.getElementById('modalDownload');
+
+        function openModal(src, text) {
+            modalImg.src = src;
+            modalCaption.innerText = text;
+            modalDownload.href = src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function forceCloseModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModal(e) {
+            if (e.target === modal) forceCloseModal();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) forceCloseModal();
+        });
+
+        function filterCards(category, btn) {
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.info-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
